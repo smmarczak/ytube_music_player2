@@ -1155,9 +1155,9 @@ class yTubeMusicComponent(MediaPlayerEntity):
 				self._api = None
 				# Check for OAuth-related errors
 				if "BadOAuthClient" in str(type(e).__name__) or "OAuth" in error_str:
-					self.log_me('error', "OAuth authentication failed. Your OAuth token is invalid or expired. Please reconfigure the integration with valid OAuth credentials (Client ID and Secret) from https://console.cloud.google.com/apis/credentials")
+					self.log_me('error', "OAuth authentication failed - KNOWN ISSUE: OAuth is currently broken due to YouTube Music server-side changes (November 2024). Switch to browser authentication: https://ytmusicapi.readthedocs.io/en/stable/setup/browser.html")
 				elif "HTTP 400" in error_str and "Bad Request" in error_str:
-					self.log_me('error', "HTTP 400 Bad Request error - Your OAuth token is expired or invalid. As of November 2024, YouTube Music requires OAuth Client ID and Secret. Please reconfigure the integration with valid OAuth credentials from https://console.cloud.google.com/apis/credentials (create OAuth Client ID for TVs and Limited Input devices)")
+					self.log_me('error', "HTTP 400 Bad Request - KNOWN ISSUE: OAuth authentication is broken due to YouTube Music changes (ytmusicapi #676, #682). SOLUTION: Use browser authentication instead. See https://ytmusicapi.readthedocs.io/en/stable/setup/browser.html")
 				self.exc()
 				return
 			idx = -1

@@ -282,7 +282,7 @@ async def async_try_login(hass, path, brand_id=None, language='en',oauth=None):
 
 	# If it's an OAuth file but no credentials provided, fail early with helpful message
 	if is_oauth_file and not oauth:
-		msg = "OAuth token file detected but no OAuth credentials provided. As of November 2024, YouTube Music requires OAuth Client ID and Secret. Please reconfigure the integration with valid OAuth credentials from https://console.cloud.google.com/apis/credentials (create OAuth Client ID for TVs and Limited Input devices) and ensure YouTube Data API is enabled."
+		msg = "OAuth token file detected but no OAuth credentials provided. NOTE: OAuth authentication is currently experiencing widespread issues due to YouTube Music server-side changes (November 2024). Many users report HTTP 400 errors even with valid OAuth credentials. RECOMMENDED SOLUTION: Use browser-based authentication instead. See https://ytmusicapi.readthedocs.io/en/stable/setup/browser.html for instructions on extracting browser headers."
 		_LOGGER.error(msg)
 		ret["base"] = ERROR_AUTH_USER
 		return [ret, msg, api]
@@ -295,7 +295,7 @@ async def async_try_login(hass, path, brand_id=None, language='en',oauth=None):
 			api = await hass.async_add_executor_job(YTMusic,path,brand_id,None,None,language)
 	except BadOAuthClient as err:
 		_LOGGER.debug("- BadOAuthClient exception")
-		msg = "OAuth authentication failed. This likely means: (1) Your client_id and client_secret are missing, invalid, or don't match the credentials used to create your OAuth token, OR (2) The YouTube Data API is not enabled in your Google Cloud Console project. Please reconfigure the integration with valid OAuth credentials from https://console.cloud.google.com/apis/credentials (create OAuth Client ID for TVs and Limited Input devices) and ensure YouTube Data API is enabled."
+		msg = "OAuth authentication failed. NOTE: OAuth authentication is currently experiencing widespread issues due to YouTube Music server-side changes (November 2024 - Issue #676, #682). Many users report this error even with valid credentials. RECOMMENDED SOLUTION: Use browser-based authentication instead. See https://ytmusicapi.readthedocs.io/en/stable/setup/browser.html for instructions. If you want to continue with OAuth: (1) Ensure client_id/client_secret match your token, (2) Enable YouTube Data API in Google Cloud Console."
 		_LOGGER.error(msg)
 		_LOGGER.error("Details: " + str(err))
 		ret["base"] = ERROR_AUTH_USER
@@ -350,7 +350,7 @@ async def async_try_login(hass, path, brand_id=None, language='en',oauth=None):
 						elif "HTTP 400" in e.args[0] and "Bad Request" in e.args[0]:
 							# HTTP 400 often indicates OAuth token issues
 							if is_oauth_file:
-								msg = "OAuth token is expired or invalid. HTTP 400 error received. Please reconfigure the integration with valid OAuth credentials from https://console.cloud.google.com/apis/credentials (create OAuth Client ID for TVs and Limited Input devices)."
+								msg = "HTTP 400 Bad Request error. This is a KNOWN ISSUE with OAuth authentication due to YouTube Music server-side changes (November 2024 - ytmusicapi issues #676, #682). OAuth is currently broken for most users even with valid credentials. RECOMMENDED SOLUTION: Switch to browser-based authentication. See https://ytmusicapi.readthedocs.io/en/stable/setup/browser.html for instructions. To use browser auth: (1) Delete this integration, (2) Extract browser headers using the guide above, (3) Manually create the header file, (4) Reconfigure integration with 'Renew OAuth credentials' unchecked."
 							else:
 								msg = "The entered information has the correct format, but returned an error 400 (bad request). Please update the cookie or reconfigure with OAuth authentication."
 							_LOGGER.error(msg)
