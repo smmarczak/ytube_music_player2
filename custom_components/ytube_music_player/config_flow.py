@@ -229,8 +229,8 @@ async def async_create_form(hass, user_input, page=1, option_flow = False):
 
 	if(page == 0):
 		data_schema[vol.Required(CONF_NAME, default=user_input[CONF_NAME])] = str # name of the component without domain
-		if option_flow:
-			data_schema[vol.Required(CONF_RENEW_OAUTH, default=user_input[CONF_RENEW_OAUTH])] = vol.Coerce(bool) # show page 2
+		# Always show the OAuth checkbox (not just for option_flow) to allow skipping OAuth during initial setup
+		data_schema[vol.Required(CONF_RENEW_OAUTH, default=user_input[CONF_RENEW_OAUTH])] = vol.Coerce(bool) # show page 2
 	elif(page == 1):
 		data_schema[vol.Required(CONF_CLIENT_ID, default=user_input[CONF_CLIENT_ID])] = str # configuration of the cookie
 		data_schema[vol.Required(CONF_CLIENT_SECRET, default=user_input[CONF_CLIENT_SECRET])] = str # configuration of the cookie

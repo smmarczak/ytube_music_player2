@@ -3,10 +3,10 @@
     "config": {
         "step": {
             "oauth": {
-                "description": "Lets start with an entity name",
+                "description": "⚠️ WARNING: OAuth is currently BROKEN due to YouTube Music changes (Nov 2024). UNCHECK the box below to use browser authentication instead (recommended). See BROWSER_AUTH_GUIDE.md for setup instructions.",
                 "data": {
                     "name": "Name for the entity (without 'media_player' prefix)",
-                    "renew_oauth": "Renew OAuth credentials"
+                    "renew_oauth": "Use OAuth authentication (NOT RECOMMENDED - currently broken, use browser auth instead)"
                 }
             },
             "oauth2": {
@@ -68,10 +68,10 @@
     "options": {
         "step": {
             "oauth": {
-                "description": "Lets start with an entity name",
+                "description": "⚠️ WARNING: OAuth is currently BROKEN due to YouTube Music changes (Nov 2024). UNCHECK the box below to use browser authentication instead (recommended). See BROWSER_AUTH_GUIDE.md for setup instructions.",
                 "data": {
                     "name": "Name for the entity (without 'media_player' prefix)",
-                    "renew_oauth": "Renew OAuth credentials"
+                    "renew_oauth": "Use OAuth authentication (NOT RECOMMENDED - currently broken, use browser auth instead)"
                 }
             },
             "oauth2": {
