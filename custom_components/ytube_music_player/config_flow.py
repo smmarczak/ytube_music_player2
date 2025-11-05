@@ -199,7 +199,7 @@ async def async_common_step_finish(self,user_input=None, option_flow = False):
 	
 	if store_token:
 		await self.hass.async_add_executor_job(lambda: self.refresh_token.store_token(self.data[CONF_HEADER_PATH]))
-	elif self.data[CONF_HEADER_PATH] != self.data[CONF_HEADER_PATH+"_old"]:
+	elif (CONF_HEADER_PATH+"_old" in self.data) and (self.data[CONF_HEADER_PATH] != self.data[CONF_HEADER_PATH+"_old"]):
 		#_LOGGER.error("moving cookie to "+self.data[CONF_HEADER_PATH])
 		if os.path.exists(self.data[CONF_HEADER_PATH+"_old"]):
 			os.rename(self.data[CONF_HEADER_PATH+"_old"],self.data[CONF_HEADER_PATH])
