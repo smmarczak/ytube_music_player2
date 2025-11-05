@@ -341,7 +341,12 @@ class yTubeMusicComponent(MediaPlayerEntity):
 		if(self._api is None):
 			self.log_debug_later("- no valid API, try to login")
 			if(os.path.exists(self._header_file)):
-				oauth_credentials=OAuthCredentials(client_id=self._client_id, client_secret=self._client_secret)
+				# Only use OAuth credentials if they are actually provided
+				# This handles both OAuth (with credentials) and browser-based authentication
+				if self._client_id and self._client_secret:
+					oauth_credentials=OAuthCredentials(client_id=self._client_id, client_secret=self._client_secret)
+				else:
+					oauth_credentials=None
 				[ret, msg, self._api] = await async_try_login(self.hass, self._header_file, self._brand_id, self._api_language,oauth_credentials)
 				if(msg != ""):
 					self._api = None
@@ -1145,8 +1150,11 @@ class yTubeMusicComponent(MediaPlayerEntity):
 				self._playlists = await self.hass.async_add_executor_job(lambda: self._api.get_library_playlists(limit=self._trackLimit))
 				self._playlists = self._playlists[:self._trackLimit]  # limit function doesn't really work ... loads at least 25
 				self.log_me('debug', " - " + str(len(self._playlists)) + " Playlists loaded")
-			except:
+			except Exception as e:
 				self._api = None
+				# Check if this is an OAuth error
+				if "BadOAuthClient" in str(type(e).__name__) or "OAuth" in str(e):
+					self.log_me('error', "OAuth authentication failed. Please reconfigure the integration with valid OAuth credentials. See https://console.cloud.google.com/apis/credentials")
 				self.exc()
 				return
 			idx = -1

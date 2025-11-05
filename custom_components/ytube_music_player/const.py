@@ -9,6 +9,7 @@ import traceback
 import asyncio
 from collections import OrderedDict
 from ytmusicapi import YTMusic
+from ytmusicapi.auth.oauth.exceptions import BadOAuthClient
 
 
 from homeassistant.const import (
@@ -268,6 +269,12 @@ async def async_try_login(hass, path, brand_id=None, language='en',oauth=None):
 			api = await hass.async_add_executor_job(lambda: YTMusic(auth=path,oauth_credentials=oauth,user=brand_id,language=language))
 		else:
 			api = await hass.async_add_executor_job(YTMusic,path,brand_id,None,None,language)
+	except BadOAuthClient as err:
+		_LOGGER.debug("- BadOAuthClient exception")
+		msg = "OAuth authentication failed. This likely means: (1) Your client_id and client_secret are missing, invalid, or don't match the credentials used to create your OAuth token, OR (2) The YouTube Data API is not enabled in your Google Cloud Console project. Please reconfigure the integration with valid OAuth credentials from https://console.cloud.google.com/apis/credentials (create OAuth Client ID for TVs and Limited Input devices) and ensure YouTube Data API is enabled."
+		_LOGGER.error(msg)
+		_LOGGER.error("Details: " + str(err))
+		ret["base"] = ERROR_AUTH_USER
 	except KeyError as err:
 		_LOGGER.debug("- Key exception")
 		if(str(err)=="'contents'"):
