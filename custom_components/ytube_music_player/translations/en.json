@@ -10,7 +10,7 @@
                 }
             },
             "oauth2": {
-                "description": "Thanks, as of November 2024, YouTube Music requires a Client ID and Secret for the YouTube Data API to connect to the API. Please open https://console.cloud.google.com/apis/credentials, click create credentials -> OAuth Client ID and pick TVs and Limited Input devices.",
+                "description": "⚠️ WARNING: OAuth authentication is currently experiencing issues due to YouTube Music server-side changes (November 2024). Many users report HTTP 400 errors even with valid credentials. If you encounter errors, please uncheck 'Renew OAuth credentials' on the previous screen and manually create a browser-based authentication file instead. See https://ytmusicapi.readthedocs.io/en/stable/setup/browser.html for instructions. If you still want to try OAuth, enter your credentials below:",
                 "data": {
                     "client_id": "Enter your google client ID",
                     "secret": "Enter your google client secret"
@@ -75,7 +75,7 @@
                 }
             },
             "oauth2": {
-                "description": "Thanks, as of November 2024, YouTube Music requires a Client ID and Secret for the YouTube Data API to connect to the API. Please open https://console.cloud.google.com/apis/credentials, click create credentials -> OAuth Client ID and pick TVs and Limited Input devices.",
+                "description": "⚠️ WARNING: OAuth authentication is currently experiencing issues due to YouTube Music server-side changes (November 2024). Many users report HTTP 400 errors even with valid credentials. If you encounter errors, please uncheck 'Renew OAuth credentials' on the previous screen and manually create a browser-based authentication file instead. See https://ytmusicapi.readthedocs.io/en/stable/setup/browser.html for instructions. If you still want to try OAuth, enter your credentials below:",
                 "data": {
                     "client_id": "Enter your google client ID",
                     "secret": "Enter your google client secret"

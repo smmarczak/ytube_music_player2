@@ -1151,10 +1151,13 @@ class yTubeMusicComponent(MediaPlayerEntity):
 				self._playlists = self._playlists[:self._trackLimit]  # limit function doesn't really work ... loads at least 25
 				self.log_me('debug', " - " + str(len(self._playlists)) + " Playlists loaded")
 			except Exception as e:
+				error_str = str(e)
 				self._api = None
-				# Check if this is an OAuth error
-				if "BadOAuthClient" in str(type(e).__name__) or "OAuth" in str(e):
-					self.log_me('error', "OAuth authentication failed. Please reconfigure the integration with valid OAuth credentials. See https://console.cloud.google.com/apis/credentials")
+				# Check for OAuth-related errors
+				if "BadOAuthClient" in str(type(e).__name__) or "OAuth" in error_str:
+					self.log_me('error', "OAuth authentication failed - KNOWN ISSUE: OAuth is currently broken due to YouTube Music server-side changes (November 2024). Switch to browser authentication: https://ytmusicapi.readthedocs.io/en/stable/setup/browser.html")
+				elif "HTTP 400" in error_str and "Bad Request" in error_str:
+					self.log_me('error', "HTTP 400 Bad Request - KNOWN ISSUE: OAuth authentication is broken due to YouTube Music changes (ytmusicapi #676, #682). SOLUTION: Use browser authentication instead. See https://ytmusicapi.readthedocs.io/en/stable/setup/browser.html")
 				self.exc()
 				return
 			idx = -1
