@@ -1593,7 +1593,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 		self.log_me('debug', "[S] async_get_url_pytube")
 		_url = ""
 		try:
-			streamingData = await self.hass.async_add_executor_job(lambda: YouTube("https://www.youtube.com/watch?v=" + videoId))
+			streamingData = await self.hass.async_add_executor_job(lambda: YouTube("https://www.youtube.com/watch?v=" + videoId, 'WEB'))
 			streams = await self.hass.async_add_executor_job(lambda: streamingData.streams)
 			streams_audio = streams.filter(only_audio=True)
 			if(len(streams_audio) > 0):
